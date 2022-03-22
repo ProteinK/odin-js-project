@@ -38,32 +38,30 @@ function playRound(playerSelection, computerSelection) {
 
 }
 
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
+let playerScore = 0;
+let computerScore = 0;
 
-  for (let i = 0; i < 5; i++) {
-    let playerSelection = prompt('Rock, Paper, Scissors: ');
-    const computerSelection = computerPlay();
+const buttons = document.querySelectorAll('button');
 
-    const result = playRound(playerSelection, computerSelection);
-    console.log(result);
-
+buttons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const result = playRound(e.target.id, computerPlay());
     if (result.includes('win')) {
       playerScore++;
     } else if (result.includes('lose')) {
       computerScore++;
     }
-  }
+    const div = document.querySelector('#result');
+    div.innerHTML = `${result}<br>Player: ${playerScore}<br>Computer: ${computerScore}`;
 
-  console.log(`Player: ${playerScore}\nComputer: ${computerScore}`);
-  if (playerScore > computerScore) {
-    console.log('Player wins!');
-  } else if (playerScore < computerScore) {
-    console.log('Computer wins!');
-  } else {
-    console.log("It's a tie!");
-  }
-}
-
-game();
+    if (playerScore === 5) {
+      div.innerHTML = "You win!"
+      playerScore = 0;
+      computerScore = 0;
+    } else if (computerScore === 5) {
+      div.innerHTML = "Computer wins!";
+      playerScore = 0;
+      computerScore = 0;
+    }
+  });
+});
